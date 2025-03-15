@@ -13,7 +13,7 @@ pub async fn start_server(adapter: JsonAlBhedTransferAdapter) -> std::io::Result
     let actix_adapter = web::Data::new(adapter);
     HttpServer::new(move || {
         App::new()
-            .app_data(web::Data::new(actix_adapter.clone()))
+            .app_data(actix_adapter.clone())
             .service(encode_handler)
             .service(decode_handler)
     })
