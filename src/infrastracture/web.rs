@@ -1,8 +1,15 @@
+use std::env;
+
 use actix_web::{post, web, App, HttpResponse, HttpServer};
 
 use crate::interface::adapter::JsonAlBhedTransferAdapter;
 
 pub async fn start_server(adapter: JsonAlBhedTransferAdapter) -> std::io::Result<()> {
+    let port = env::var("BACKEND_PORT")
+        .ok()
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(8080);
+
     let actix_adapter = web::Data::new(adapter);
     HttpServer::new(move || {
         App::new()
@@ -10,7 +17,7 @@ pub async fn start_server(adapter: JsonAlBhedTransferAdapter) -> std::io::Result
             .service(encode_handler)
             .service(decode_handler)
     })
-    .bind("127.0.0.1:8080")?
+    .bind(("0.0.0.0", port))?
     .run()
     .await
 }
