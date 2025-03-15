@@ -1,4 +1,4 @@
-use albhed_translator::{
+use albhed_translator_service::{
     infrastracture::web,
     interface::adapter::JsonAlBhedTransferAdapter,
     usecase::{decode_usecase::DecodeInteractor, encode_usecase::EncodeInteractor},

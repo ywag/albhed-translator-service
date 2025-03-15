@@ -210,8 +210,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "albhed-translator"
-version = "0.1.0"
+name = "albhed-translator-service"
+version = "25.3.1"
 dependencies = [
  "actix-web",
  "serde",
