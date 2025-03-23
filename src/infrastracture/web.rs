@@ -1,5 +1,6 @@
 use std::env;
 
+use actix_cors::Cors;
 use actix_web::{post, web, App, HttpResponse, HttpServer};
 
 use crate::interface::adapter::JsonAlBhedTransferAdapter;
@@ -9,10 +10,18 @@ pub async fn start_server(adapter: JsonAlBhedTransferAdapter) -> std::io::Result
         .ok()
         .and_then(|p| p.parse().ok())
         .unwrap_or(8080);
+    let frontend_origin =
+        env::var("FRONTEND_ORIGIN").unwrap_or("http://localhost:5173".to_string());
 
     let actix_adapter = web::Data::new(adapter);
     HttpServer::new(move || {
         App::new()
+            .wrap(
+                Cors::default()
+                    .allowed_origin(&frontend_origin)
+                    .allowed_methods(vec!["GET", "POST"])
+                    .allowed_headers(vec![actix_web::http::header::CONTENT_TYPE]),
+            )
             .app_data(actix_adapter.clone())
             .service(encode_handler)
             .service(decode_handler)
