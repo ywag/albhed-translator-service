@@ -3,9 +3,9 @@ use std::env;
 use actix_cors::Cors;
 use actix_web::{get, post, web, App, HttpResponse, HttpServer};
 
-use crate::interface::adapter::JsonAlBhedTransferAdapter;
+use crate::interface::adapter::JsonAlBhedTranslatorAdapter;
 
-pub async fn start_server(adapter: JsonAlBhedTransferAdapter) -> std::io::Result<()> {
+pub async fn start_server(adapter: JsonAlBhedTranslatorAdapter) -> std::io::Result<()> {
     let port = env::var("BACKEND_PORT")
         .ok()
         .and_then(|p| p.parse().ok())
@@ -35,7 +35,7 @@ pub async fn start_server(adapter: JsonAlBhedTransferAdapter) -> std::io::Result
 #[post("/encode")]
 async fn encode_handler(
     body: String,
-    adapter: web::Data<JsonAlBhedTransferAdapter>,
+    adapter: web::Data<JsonAlBhedTranslatorAdapter>,
 ) -> HttpResponse {
     match adapter.encode(&body) {
         Ok(response) => HttpResponse::Ok()
@@ -48,7 +48,7 @@ async fn encode_handler(
 #[post("/decode")]
 async fn decode_handler(
     body: String,
-    adapter: web::Data<JsonAlBhedTransferAdapter>,
+    adapter: web::Data<JsonAlBhedTranslatorAdapter>,
 ) -> HttpResponse {
     match adapter.decode(&body) {
         Ok(response) => HttpResponse::Ok()
@@ -74,7 +74,8 @@ mod tests {
     async fn test_encode_endpoint_valid() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTransferAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let app = test::init_service(
             App::new()
                 .app_data(web::Data::new(adapter))
@@ -99,7 +100,8 @@ mod tests {
     async fn test_encode_endpoint_invalid() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTransferAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let app = test::init_service(
             App::new()
                 .app_data(web::Data::new(adapter))
@@ -121,7 +123,8 @@ mod tests {
     async fn test_decode_endpoint_valid() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTransferAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let app = test::init_service(
             App::new()
                 .app_data(web::Data::new(adapter))
@@ -146,7 +149,8 @@ mod tests {
     async fn test_decode_endpoint_invalid() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTransferAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let app = test::init_service(
             App::new()
                 .app_data(web::Data::new(adapter))
@@ -168,7 +172,8 @@ mod tests {
     async fn test_health_check() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTransferAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let app = test::init_service(
             App::new()
                 .app_data(web::Data::new(adapter))

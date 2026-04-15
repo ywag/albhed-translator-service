@@ -16,17 +16,17 @@ pub struct AlBhedTransferResponse {
     result: String,
 }
 
-pub struct JsonAlBhedTransferAdapter {
+pub struct JsonAlBhedTranslatorAdapter {
     encode_input_port: Box<dyn EncodeInputPort + Sync + Send>,
     decode_input_port: Box<dyn DecodeInputPort + Sync + Send>,
 }
 
-impl JsonAlBhedTransferAdapter {
+impl JsonAlBhedTranslatorAdapter {
     pub fn new(
         encode_port: Box<dyn EncodeInputPort + Sync + Send>,
         decode_port: Box<dyn DecodeInputPort + Sync + Send>,
     ) -> Self {
-        JsonAlBhedTransferAdapter {
+        JsonAlBhedTranslatorAdapter {
             encode_input_port: encode_port,
             decode_input_port: decode_port,
         }
@@ -74,7 +74,8 @@ mod tests {
     fn test_encode_valid_json() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTransferAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let json = r#"{"text": "がんばろう！"}"#;
         let result = adapter.encode(json).unwrap();
         assert_eq!(result, r#"{"result":"ダンザノフ！"}"#);
@@ -84,7 +85,8 @@ mod tests {
     fn test_encode_invalid_json() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTransferAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let json = r#"invalid json"#;
         let result = adapter.encode(json);
         assert!(result.is_err());
@@ -94,7 +96,8 @@ mod tests {
     fn test_decode_valid_json() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTransferAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let json = r#"{"text": "ヤヌサー"}"#;
         let result = adapter.decode(json).unwrap();
         assert_eq!(result, r#"{"result":"ますたー"}"#);
@@ -104,7 +107,8 @@ mod tests {
     fn test_decode_invalid_json() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTransferAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let json = r#"invalid json"#;
         let result = adapter.decode(json);
         assert!(result.is_err());
