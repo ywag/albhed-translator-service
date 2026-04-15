@@ -74,7 +74,8 @@ mod tests {
     async fn test_encode_endpoint_valid() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let app = test::init_service(
             App::new()
                 .app_data(web::Data::new(adapter))
@@ -99,7 +100,8 @@ mod tests {
     async fn test_encode_endpoint_invalid() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let app = test::init_service(
             App::new()
                 .app_data(web::Data::new(adapter))
@@ -121,7 +123,8 @@ mod tests {
     async fn test_decode_endpoint_valid() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let app = test::init_service(
             App::new()
                 .app_data(web::Data::new(adapter))
@@ -146,7 +149,8 @@ mod tests {
     async fn test_decode_endpoint_invalid() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let app = test::init_service(
             App::new()
                 .app_data(web::Data::new(adapter))
@@ -168,7 +172,8 @@ mod tests {
     async fn test_health_check() {
         let encode_port = EncodeInteractor::new();
         let decode_port = DecodeInteractor::new();
-        let adapter = JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
+        let adapter =
+            JsonAlBhedTranslatorAdapter::new(Box::new(encode_port), Box::new(decode_port));
         let app = test::init_service(
             App::new()
                 .app_data(web::Data::new(adapter))
